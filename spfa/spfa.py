@@ -4,12 +4,6 @@ import sys
 import graph
 
 
-class LinkList:
-    def __init__(self, vertex=-1):
-        self.vertex = vertex
-        self.next = [None]
-
-
 class SPFA:
     def __init__(self, g: graph.Graph):
         # 存储图的信息
@@ -40,6 +34,7 @@ class SPFA:
         while not op.empty():
             # 获取当前节点
             temp = op.get()
+            self.flag[temp] = False
             # 对当前节点进行松弛
             for key, value in self.graph.edge[temp].items():
                 # 如果存在最短路径权重相同的情况, 则将当前路径也加入到最短路径中
@@ -69,7 +64,7 @@ class SPFA:
                         raise ValueError("存在负圈!")
 
     # 输出
-    def print(self):
+    def print_to_terminal(self):
         for i in range(len(self.pre_vertex)):
             print(f"-------------------------")
             print(f"From [{self.vertex}] to [{i}]: ")
@@ -117,11 +112,12 @@ class SPFA:
         temp = sys.maxsize
         index_list = []
         for index in range(len(count_list)):
+            if count_list[index] == temp:
+                index_list.append(index)
             if count_list[index] < temp:
                 temp = count_list[index]
                 index_list = [index]
-            if count_list[index] == temp:
-                index_list.append(index)
+            
         # 输出筛选结果
         for i in index_list:
             print(format_string_list[i])
@@ -160,7 +156,7 @@ def main():
     # 以0为单源点求其到其他所有节点的最短路
     spfa.run(0)
     # 输出结果
-    spfa.print()
+    spfa.print_to_terminal()
 
 
 if __name__ == '__main__':
