@@ -53,6 +53,7 @@ class Graph:
         self.vertex = []
         self.vertex_number = 0
 ```
+
 其中`Graph.edge`记录边的信息，其记录形式如下：
 
 ```python
@@ -89,12 +90,17 @@ class SPFA:
 对于次短路的算法具体如下所述：
 
 当对某一节点`i`进行松弛操作时进行记录：
+
 - 如果到当前节点`i`的最短路与途径其他节点`j`之后再到当前节点`i`的路径距离相比较短，则不做操作
+
 - 如果到当前节点`i`的最短路与途径其他节点`j`之后再到当前节点`i`的路径距离相同，那么将途径的节点`j`记录进入最短路前置节点的字典中，即
+
 ```python
 self.pre_vertex[i]["ShortestPreVertex"].append(j)
 ```
+
 - 如果到当前节点`i`的最短路与途径其他节点`j`之后再到当前节点`i`的路径距离相比较长，那么将当前节点`i`的次短路的前置节点集合应该是之前的最短路的前置节点集合，最短路前置节点应该是`j`，即
+
 ```python
 self.pre_vertex[i]["SecondShortestPreVertex"] = self.pre_vertex[i]["ShortestPreVertex"]
 self.pre_vertex[i]["ShortestPreVertex"] = [j]
@@ -103,3 +109,7 @@ self.pre_vertex[i]["ShortestPreVertex"] = [j]
 最终记录形成字典，之后进行递归还原多级字典，并且计算、校验次短路经并将结果输出
 
 > 经验证，最终结果与标准结果有一定的偏差，可能在于某些判断条件上的问题，随后时间允许的情况下会进行修复
+
+#### 时间复杂度
+
+由于采用队列进行了优化，所以在稀疏图中，最好时间复杂度为$O(kE)$，其中`k`是一个常数；在稠密图中，最坏时间复杂度达到了为$O(VE)$。
